@@ -15,9 +15,9 @@ namespace WebsocketSecure_Server.Handlers
     {
         static ChatHandler()
         {
-            User kneidi = new User {Username = "Kneidi", Password = "Admin1234"};
-            User richi = new User {Username = "Richi", Password = "Admin1234"};
-            User bert = new User {Username = "Bert", Password = "Admin1234"};
+            User kneidi = new User("Kneidi", "Admin1234");
+            User richi = new User("Richi", "Admin1234");
+            User bert = new User("Bert", "Admin1234");
             Users = new List<User>
             {
                 kneidi,
@@ -97,6 +97,7 @@ namespace WebsocketSecure_Server.Handlers
                             loggedInUser = requested;
 
                             SendUsersAsync(requested);
+                            BroadcastAsync(new Message{Command = "new_online", Data = loggedInUser.Username}, loggedInUser);
                         }
                         else if (requested != null && LoggedInSockets.ContainsKey(requested.Username))
                         {
@@ -149,6 +150,14 @@ namespace WebsocketSecure_Server.Handlers
             ChatMessages.Add(chatMessage);
             if (LoggedInSockets[chatMessage.To] != null)
                 await SendAsync(LoggedInSockets[chatMessage.To], chatMessage);
+        }
+
+        private static async void BroadcastAsync(Message msg, User sender)
+        {
+            foreach (var socket in LoggedInSockets.Where(s => s.Key != sender.Username))
+            {
+                await SendAsync(socket.Value, msg);
+            }
         }
 
         private static async Task SendAsync(WebSocket receiver, object obj)
