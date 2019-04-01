@@ -21,7 +21,7 @@ namespace WebsocketSecure_Server
                     {
                         //Listen on 5001 with https
                         options.Listen(IPAddress.Any, 5001,
-                            listenOptions => { listenOptions.UseHttps("../../Keys/server.p12", "Admin1234"); });
+                            listenOptions => { listenOptions.UseHttps("../Keys/server.p12", "Admin1234"); });
                     }
                     catch (Exception ex)
                     {
