@@ -142,7 +142,7 @@ namespace WebsocketSecure_Server.Handlers
 
         private static async void SendUsersAsync(User user)
         {
-            await SendAsync(LoggedInSockets[user.Username], Users.Where(u => u.Username != user.Username).Select(u => u.Username));
+            await SendAsync(LoggedInSockets[user.Username], Users.Where(u => u.Username != user.Username).Select(u => new{u.Username, Online=LoggedInSockets.Any(s => s.Key == u.Username)}));
         }
 
         private static async void SendMessageAsync(ChatMessage chatMessage)

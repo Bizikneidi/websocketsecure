@@ -22,10 +22,19 @@ Below there's a list of all 3 available commands.
 {"command":"login","data":{"Username":"Kneidi","Password":"Admin1234"}}
 ```
 
---> **RETURNS**: All available users
+--> **RETURNS**: All available users with an online-indicator
 
 ```json
-["Richi","Bert"]
+[
+    {"Username":"Kneidi","Online":true},
+    {"Username":"Bert","Online":false}
+]
+```
+
+--> **BROADCASTS**: A message for all connected users indicating a new user is online
+
+```json
+{"Command":"new_online","Data":"Kneidi"}
 ```
 
 ### Send message
