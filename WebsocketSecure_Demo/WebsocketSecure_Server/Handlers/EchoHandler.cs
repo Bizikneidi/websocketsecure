@@ -170,7 +170,6 @@ namespace WebsocketSecure_Server.Handlers
         }
     }
 
-    // ReSharper disable once ClassNeverInstantiated.Global
     internal class Message
     {
         public string Command { get; set; }
