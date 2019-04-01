@@ -36,7 +36,6 @@ namespace WebsocketSecure_Server
 
             app.Use(async (httpContext, next) =>
             {
-                string[] path = httpContext.Request.Path.Value.Split("/");
                 if (httpContext.WebSockets.IsWebSocketRequest && httpContext.Request.Path.Value.Contains("chat"))
                 {
                     WebSocket ws = await httpContext.WebSockets.AcceptWebSocketAsync();
