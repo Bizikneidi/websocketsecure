@@ -67,4 +67,8 @@ server {
         try_files $uri $uri/ =404;
     }
 }
-``` 
+```
+
+Now start the nginx-service and connect to <https://localhost>.
+
+Done!
