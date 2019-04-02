@@ -22,6 +22,18 @@ Below there's a list of all 3 available commands.
 {"command":"login","data":{"Username":"Kneidi","Password":"Admin1234"}}
 ```
 
+--> **RETURNS**: An empty response
+
+```json
+{"command":"success","data":null}
+```
+
+### Get users
+
+```json
+{"command":"get_users","data":null}
+```
+
 --> **RETURNS**: All available users with an online-indicator
 
 ```json

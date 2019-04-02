@@ -96,7 +96,8 @@ namespace WebsocketSecure_Server.Handlers
                             LoggedInSockets.Add(requested.Username, ws);
                             loggedInUser = requested;
 
-                            SendUsersAsync(requested);
+                            await SendAsync(ws, "success", null);
+                            
                             BroadcastAsync(new Message{Command = "new_online", Data = loggedInUser.Username}, loggedInUser);
                         }
                         else if (requested != null && LoggedInSockets.ContainsKey(requested.Username))
@@ -108,6 +109,12 @@ namespace WebsocketSecure_Server.Handlers
                     case "send_message":
                         if (loggedInUser != null)
                             SendMessageAsync(((JObject) msg.Data).ToObject<ChatMessage>());
+                        else
+                            await CloseConnection(ws, "User was not logged in!", WebSocketCloseStatus.PolicyViolation);
+                        break;
+                    case "get_users":
+                        if (loggedInUser != null)
+                            SendUsersAsync(loggedInUser);
                         else
                             await CloseConnection(ws, "User was not logged in!", WebSocketCloseStatus.PolicyViolation);
                         break;
