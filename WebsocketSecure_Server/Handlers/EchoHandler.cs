@@ -137,19 +137,19 @@ namespace WebsocketSecure_Server.Handlers
                 .Where(cm => cm.To == u1 && cm.From == u2 || cm.To == u2 && cm.From == u1)
                 .ToList();
 
-            await SendAsync(receiver, messagesToSend);
+            await SendAsync(receiver, "prev_messages", messagesToSend);
         }
 
         private static async void SendUsersAsync(User user)
         {
-            await SendAsync(LoggedInSockets[user.Username], Users.Where(u => u.Username != user.Username).Select(u => new{u.Username, Online=LoggedInSockets.Any(s => s.Key == u.Username)}));
+            await SendAsync(LoggedInSockets[user.Username], "users_online", Users.Where(u => u.Username != user.Username).Select(u => new{u.Username, Online=LoggedInSockets.Any(s => s.Key == u.Username)}));
         }
 
         private static async void SendMessageAsync(ChatMessage chatMessage)
         {
             ChatMessages.Add(chatMessage);
             if (LoggedInSockets[chatMessage.To] != null)
-                await SendAsync(LoggedInSockets[chatMessage.To], chatMessage);
+                await SendAsync(LoggedInSockets[chatMessage.To], "new_message", chatMessage);
         }
 
         private static async void BroadcastAsync(Message msg, User sender)
@@ -160,9 +160,14 @@ namespace WebsocketSecure_Server.Handlers
             }
         }
 
-        private static async Task SendAsync(WebSocket receiver, object obj)
+        private static async Task SendAsync(WebSocket receiver, string command, object data)
         {
-            var msg = Encoding.Default.GetBytes(JsonConvert.SerializeObject(obj));
+            await SendAsync(receiver, new Message {Command = command, Data = data});
+        }
+
+        private static async Task SendAsync(WebSocket receiver, Message message)
+        {
+            var msg = Encoding.Default.GetBytes(JsonConvert.SerializeObject(message));
             await receiver.SendAsync(new ArraySegment<byte>(msg, 0, msg.Count(b => b != 0)),
                 WebSocketMessageType.Text,
                 true,

@@ -60,7 +60,7 @@ Below there's a list of all 3 available commands.
 
 ```json
 {
-    "command":"send_message",
+    "command":"new_message",
     "data": {
         "From":"Kneidi",
         "To":"Richi",
