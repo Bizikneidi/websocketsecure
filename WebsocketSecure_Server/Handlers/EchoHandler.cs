@@ -101,7 +101,7 @@ namespace WebsocketSecure_Server.Handlers
                         }
                         else if (requested != null && LoggedInSockets.ContainsKey(requested.Username))
                         {
-                            await CloseConnection(ws, "User already logged in!", WebSocketCloseStatus.PolicyViolation);
+                            await SendAsync(ws, "error", "User is already logged in!");
                         }
 
                         break;

@@ -41,6 +41,12 @@ Below there's a list of all 3 available commands.
 {"Command":"new_online","Data":"Kneidi"}
 ```
 
+If the user is already logged in somewhere else, this command will be returned:
+
+```json
+{"Command":"error","Data":"User is already logged in!"}
+```
+
 ### Send message
 
 ```json
