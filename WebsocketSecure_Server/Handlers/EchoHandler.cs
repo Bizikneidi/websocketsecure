@@ -167,11 +167,6 @@ namespace WebsocketSecure_Server.Handlers
             }
         }
 
-        private static async Task SendAsync(WebSocket receiver, string command, object data)
-        {
-            await SendAsync(receiver, new Message {Command = command, Data = data});
-        }
-
         private static async Task SendAsync(WebSocket receiver, Message message)
         {
             var msg = Encoding.Default.GetBytes(JsonConvert.SerializeObject(message));
@@ -179,6 +174,11 @@ namespace WebsocketSecure_Server.Handlers
                 WebSocketMessageType.Text,
                 true,
                 CancellationToken.None);
+        }
+        
+        private static async Task SendAsync(WebSocket receiver, string command, object data)
+        {
+            await SendAsync(receiver, new Message {Command = command, Data = data});
         }
     }
 
